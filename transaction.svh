@@ -34,14 +34,14 @@ constraint enable_ab{
         };
   }
 constraint op_ab_c{
-    a_op dist{0:/50,1:/50,2:/50,3:/50,4:/50,5:/50,6:/50};
+  a_op dist{0:/50,1:/50,2:/50,3:/50,4:/50,5:/50,6:/50,7:/50};
     b_op dist{0:/50,1:/50,2:/50,3:/50};
   }
 constraint illegal_opa_c{
     if(ALU_en && a_en && !b_en ){
         if(a_op == 3'b111){
-           A <= 'b0;
-           B <= 'b0;
+           A <= 'h0;
+           B <= 'h0;
             }
         }
     }
@@ -49,19 +49,19 @@ constraint illegal_opa_c{
 constraint illegal_opb_c{
     if(ALU_en && !a_en && b_en ){
        if(b_op==2'b11){
-          A <= 'b0;
-          B <= 'b0;
+          A <= 'h0;
+          B <= 'h0;
             }
         }
     }
 constraint A_B {
  A dist {
-    5'h0 :/ 60,
-    [5'h1 : 5'hFF] :/ 40
+    5'h0 :/ 40,
+   [5'h01 : 5'hFF] :/ 60
     };
  B dist {
-    5'h0 :/ 80,
-    [5'h1 : 5'hFF] :/ 20
+    5'h0 :/ 40,
+   [5'h01 : 5'hFF] :/ 60
     };
 }
         
