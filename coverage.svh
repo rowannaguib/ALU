@@ -8,16 +8,21 @@ class coverage;
     event next;
     
 covergroup cg;
-	opa: coverpoint tr.a_op;
+ 	option.auto_bin_max = 256;
+  	opa: coverpoint tr.a_op;
  	en_a: coverpoint tr.a_en;
-	cross opa,en_a;
+  	cross opa,en_a{
+    bins bin_op_a = binsof (opa) intersect{[0:7]};
+    }
     opb: coverpoint tr.b_op;
     en_b: coverpoint tr.b_en;
-    cross opb,en_b;
+  cross opb,en_b{
+    bins bin_op_b = binsof (opb) intersect{[0:3]};
+ 	}
     ina:coverpoint tr.A;
     inb:coverpoint tr.B;
-    rst:coverpoint tr.rst_n;
-    out:coverpoint tr.c;
+    rst:coverpoint tr.rst_n {bins activated = {0}; bins deactivated = {1};}
+    out:coverpoint tr.c {bins off = {0};}
 endgroup
 
   function new(mailbox#(transaction) mb2cov);
@@ -30,6 +35,7 @@ endgroup
       mb2cov.get(tr);
       tr.display_alu("[COV]");
       cg.sample();
+      $display ("Coverage = %.2f%%", cg.get_coverage());
       $display("                      ********************************                ");
     end
   endtask:run
